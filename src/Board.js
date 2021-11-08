@@ -34,6 +34,12 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function createBoard() {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
+
+    //get a row, fill the sub col spots, repeat
+    for (let row = 0; row < nrows; row++) {
+      initialBoard.push(Array(ncols).fill(false)) 
+    }
+    
     return initialBoard;
   }
 
@@ -66,7 +72,29 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   // TODO
 
   // make table board
-
+  return (
+    <>
+      <table className="Board">
+        {board.map((row, rowInd) => {
+          return (
+            <tbody key={`row-${rowInd}`}>
+              <tr>
+              {
+              row.map((col, colInd) => {
+                return (
+                    <Cell isLit={col} 
+                    key={`${rowInd}-${colInd}`} 
+                    coord={`${rowInd}-${colInd}`}/>
+                )
+              })
+              }
+              </tr>
+            </tbody>
+          )
+        })}
+      </table>
+    </>
+  )
   // TODO
 }
 

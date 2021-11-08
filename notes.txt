@@ -1,0 +1,8 @@
+design:
+
+GameBoard
+    BtnStart
+    Grid
+        put state here which stores info about lights on/off
+        Indiv light
+
