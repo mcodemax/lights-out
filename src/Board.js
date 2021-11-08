@@ -27,7 +27,7 @@ import "./Board.css";
  *
  **/
 
-function Board({ nrows, ncols, chanceLightStartsOn }) {
+function Board({ nrows, ncols, chanceLightStartsOn=.5 }) {
   const [board, setBoard] = useState(createBoard());
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
@@ -35,9 +35,17 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
 
+    /** if chanceLightsOn=.5 the chance for the lights to be on will be 50% */
+    const probabilityFuncLit = (chanceLightsOn) => {
+      return !!chanceLightsOn && Math.random() <= chanceLightsOn ? true : false;
+    };
+
     //get a row, fill the sub col spots, repeat
     for (let row = 0; row < nrows; row++) {
-      initialBoard.push(Array(ncols).fill(false)) 
+      initialBoard.push([]);
+      for (let col = 0; col < ncols; col++) {
+        initialBoard[row].push(probabilityFuncLit(chanceLightStartsOn));
+      }
     }
     
     return initialBoard;
@@ -45,6 +53,8 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+
+    //maygbe implement a allexpect filter array method on board to see if you won or not
   }
 
   function flipCellsAround(coord) {
@@ -60,10 +70,21 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       };
 
       // TODO: Make a (deep) copy of the oldBoard
+      const newBoard = oldBoard.map(row => {
+        return row.map(col => {
+          return col;
+        })
+      })
 
       // TODO: in the copy, flip this cell and the cells around it
+      flipCell(y, x, newBoard);
+      flipCell(y+1, x, newBoard);//up
+      flipCell(y, x+1, newBoard);//right
+      flipCell(y-1, x, newBoard);//down
+      flipCell(y, x-1, newBoard);//left
 
       // TODO: return the copy
+      return newBoard;
     });
   }
 
@@ -84,7 +105,8 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
                 return (
                     <Cell isLit={col} 
                     key={`${rowInd}-${colInd}`} 
-                    coord={`${rowInd}-${colInd}`}/>
+                    coord={`${rowInd}-${colInd}`}
+                    flipCellsAroundMe={flipCellsAround}/>
                 )
               })
               }
