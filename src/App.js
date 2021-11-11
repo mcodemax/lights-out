@@ -9,7 +9,8 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <Board nrows={5} ncols={5}/>
+      <h1>LIGHTS OUT</h1>
+      <Board />
       {/* <Cell /> */}
     </div>
   );
